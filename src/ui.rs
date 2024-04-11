@@ -2,6 +2,7 @@ use ratatui::{
     layout::{Alignment, Constraint, Direction, Layout},
     style::{Color, Style, Styled, Stylize},
     symbols,
+    text::Text,
     widgets::{Block, BorderType, Borders, Padding, Paragraph},
     Frame,
 };
@@ -52,15 +53,22 @@ pub fn render(app: &mut App, frame: &mut Frame) {
             Constraint::Percentage(RIGHT_WIDTH),
         ])
         .split(frame.size());
-    frame.render_widget(
-        Block::new()
-            .border_set(symbols::border::PLAIN)
-            .borders(Borders::TOP | Borders::BOTTOM | Borders::LEFT)
-            .border_type(BorderType::Rounded)
-            .title("Left"),
-        layout_chunks[0],
-    );
 
+    let left_block = Block::new()
+        .border_set(symbols::border::PLAIN)
+        .borders(Borders::TOP | Borders::BOTTOM | Borders::LEFT)
+        .border_type(BorderType::Rounded)
+        .title("Left");
+    let info_text = Paragraph::new(Text::from(format!(
+        "name: {}\ntotal memory: {}\nused memory: {}\nCPUs: {}",
+        app.system_info.host_name, app.system_info.total_memory, app.system_info.used_memory, app.system_info.cpus
+    )))
+    .block(left_block)
+    .alignment(Alignment::Center);
+    // left
+    frame.render_widget(info_text, layout_chunks[0]);
+
+    // right
     frame.render_widget(
         Block::new()
             .border_set(symbols::border::Set {
