@@ -20,11 +20,12 @@ pub struct SystemInfo {
     pub used_memory: String,
     pub cpus: String,
     pub cpu_usage: String,
+    pub monitor_memory: Vec<u64>
 }
 
 impl SystemInfo {
-    pub fn new(host_name: String, total_memory: String, used_memory: String, cpus: String, cpu_usage: String) -> Self {
-        Self { host_name, total_memory, used_memory, cpus, cpu_usage }
+    pub fn new(host_name: String, total_memory: String, used_memory: String, cpus: String, cpu_usage: String, monitor_memory: Vec<u64>) -> Self {
+        Self { host_name, total_memory, used_memory, cpus, cpu_usage, monitor_memory }
     }
 }
 

@@ -3,7 +3,7 @@ use ratatui::{
     style::{Color, Style, Styled, Stylize},
     symbols,
     text::Text,
-    widgets::{Block, BorderType, Borders, Padding, Paragraph},
+    widgets::{Block, BorderType, Borders, Padding, Paragraph, RenderDirection, Sparkline},
     Frame,
 };
 
@@ -61,7 +61,10 @@ pub fn render(app: &mut App, frame: &mut Frame) {
         .title("Left");
     let info_text = Paragraph::new(Text::from(format!(
         "name: {}\ntotal memory: {}\nused memory: {}\nCPUs: {}",
-        app.system_info.host_name, app.system_info.total_memory, app.system_info.used_memory, app.system_info.cpus
+        app.system_info.host_name,
+        app.system_info.total_memory,
+        app.system_info.used_memory,
+        app.system_info.cpus
     )))
     .block(left_block)
     .alignment(Alignment::Center);
@@ -82,4 +85,9 @@ pub fn render(app: &mut App, frame: &mut Frame) {
             .title("Right"),
         layout_chunks[1],
     );
+
+    let monitor_memory = Sparkline::default()
+        .data(&*app.system_info.monitor_memory)
+        .direction(RenderDirection::LeftToRight);
+    frame.render_widget(monitor_memory, layout_chunks[1]);
 }

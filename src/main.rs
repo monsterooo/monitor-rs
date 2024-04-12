@@ -54,6 +54,8 @@ async fn main() -> AppResult<()> {
                 system_info.total_memory = format_bytes(sys.total_memory());
                 system_info.used_memory = format_bytes(sys.used_memory());
                 system_info.cpus = format!("{}", sys.cpus().len());
+                system_info.monitor_memory = Vec::from(app.system_info.monitor_memory);
+                system_info.monitor_memory.push((sys.used_memory() as f64 / sys.total_memory() as f64 * 100.0) as u64);
                 
                 app.system_info = system_info;
             }
